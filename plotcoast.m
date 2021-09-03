@@ -86,7 +86,7 @@ if rem(nargin,2)==1   % odd
 %          end
 %          axis([-180 -30 0 90])
 % new demo code:
-          fullpage         
+          %fullpage         
           for i=1:length(cases)
              subplot(length(cases)/2,2,i)
              plotcoast(cases{i});
