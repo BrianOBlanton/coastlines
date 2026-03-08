@@ -160,7 +160,10 @@ yax=get(gca,'ylim');
 
 %disp(['Drawing ' cflag ' ...']);
 %h=line(PLOTCOAST.d(:,1),PLOTCOAST.d(:,2),PLOTCOAST.plotargs{:});
-h=line(lo,la,plotargs{:},'Tag','coastline');
+h=line(lo,la,plotargs{:},'Tag','coastline','Clipping','on');
+
+set(gca,'xlim',xax)
+set(gca,'ylim',yax)
 
 if nargout==0,clear h, end
 

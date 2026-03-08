@@ -30,7 +30,6 @@ end
 fields={'gshhs','binned_GSHHS','binned_border','binned_river','wdb_borders','wdb_rivers'};
 resolutions={'c','l','i','h','f'};
 regions=["world","na","nc","ep"];
-%lims={double.empty(4,0), [-120    0    0  70], [-80   -70   30  40], [-200 -100    0  70]};
 lims={[-180  180  -90  90], [-120    0    0  70], [-80   -70   30  40], [-200 -100    0  70]};
 regiondict=dictionary(regions,lims);
 
@@ -40,6 +39,7 @@ res=resolutions{1};
 lim=lims{1}; 
 field=fields{1};
 shiftlon=false;
+% landonly=true;
 
 % Strip off propertyname/value pairs in varargin not related to
 % "line" object properties.
@@ -54,13 +54,17 @@ while k<length(varargin)
             region=varargin{k+1};
             varargin([k k+1])=[];
             if ~ismember(region,regions)
-                %          error("region not found in regions list: %s",regions)
+                % error("region not found in regions list: %s",regions)
                 error("region not found in regions list.")
             end
         case {'lims', 'limits'}
             lim=varargin{k+1};
             varargin([k k+1])=[];
-            if numel(lim)~=4
+            if isstr(lim)
+                if ~strcmp(lim,'axis')
+                    error('lims argument must be the string "axis" of a 1x4 vector.')
+                end
+            elseif numel(lim)~=4
                 error('limits vector not 1x4 | 4x1.')
             end
         case {'res','resolution'}
@@ -86,7 +90,9 @@ while k<length(varargin)
     end
 end
 
-if ~strcmp(region,'world')
+if strcmp(lim,'axis')
+    lim=axis;
+elseif ~strcmp(region,'world')
     lim=regiondict{region};
 end
 
@@ -101,19 +107,12 @@ if shiftlon
 
 end
 
+levels = [S.Level];
+land = (levels == 1);
+S=S(land);
 
 lo= [S.Lon];
 la= [S.Lat];
-
-% if ismap(gca)
-%     mstruct=gcm;
-%     [lo,la] = projfwd(mstruct,la,lo);
-% end
-% 
-% h=line(lo, la,'Color','k',varargin{:});
-% h.Clipping='on';
-
-% return
 
 if ~ismap(gca) 
     h=line(lo, la,'Color','k',varargin{:});
@@ -122,6 +121,4 @@ else
     h=geoshow(la,lo,"DisplayType","line",varargin{:});
     hold off
 end
-
-
 
