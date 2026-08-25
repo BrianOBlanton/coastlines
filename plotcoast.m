@@ -160,7 +160,8 @@ yax=get(gca,'ylim');
 
 %disp(['Drawing ' cflag ' ...']);
 %h=line(PLOTCOAST.d(:,1),PLOTCOAST.d(:,2),PLOTCOAST.plotargs{:});
-h=line(lo,la,plotargs{:},'Tag','coastline','Clipping','on');
+h=line(lo,la,1000*ones(size(lo)),plotargs{:},'Tag','coastline','Clipping','on');
+% h=line(lo,la,plotargs{:},'Tag','coastline','Clipping','on');
 
 set(gca,'xlim',xax)
 set(gca,'ylim',yax)
