@@ -22,9 +22,12 @@ function [h,S]=drawgshhg(varargin)
 % h=drawgshhg('Region','nc','resolution','l','Color','b')
 %
 
-GSHHGDIR='/Users/bblanton/matlab/data.matlab/GSHHG';
+GSHHGDIR='/Users/bblanton/matlab/data.mtlab/GSHHG';
 if ~exist(GSHHGDIR,'dir')
-    error('Could not find GSSHG dir: %s',GSHHGDIR)
+    msg=sprintf('Could not find GSHHG dir: %s.' ,GSHHGDIR);
+    msg=[msg 'Download the binary GSHHG files from http://www.soest.hawaii.edu/pwessel/gshhg/gshhg-gmt-2.3.7.tar.gz '];
+    msg=[msg 'and set the above GSHHGDIR to its location.'];
+    error (msg) 
 end
 
 fields={'gshhs','binned_GSHHS','binned_border','binned_river','wdb_borders','wdb_rivers'};
