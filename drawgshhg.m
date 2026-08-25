@@ -4,6 +4,16 @@ function [h,S]=drawgshhg(varargin)
 % Global Self-Consistent Hierarchical High-Resolution Geography
 % https://www.mathworks.com/help/map/ref/gshhs.html
 %
+%  By default, DRAWGSHHG looks for GHSSG files in the location pointed to
+%  by the environment variable GSHHGDIR.  If GSHHGDIR does not exist or is empty, it
+%  looks in "$HOME/matlab/data.matlab/GHSSG".  
+%
+% Download the binary GSHHG files from 
+%   http://www.soest.hawaii.edu/pwessel/gshhg/gshhg-gmt-2.3.7.tar.gz and
+%   put into <SOMEPLACE>/GSHHG.  Then, set GSHHGDIR in startup.m:
+%   
+%   setenv("GSHHGDIR","<SOMEPLACE>/GSHHG");
+%
 % Input: 
 %   Region - 'world' (def), 'northatlantic' | 'na', 'northcarolina' | 'nc'
 %   ShiftLon - shift lons to 0-360 (def=False)
@@ -21,12 +31,14 @@ function [h,S]=drawgshhg(varargin)
 %
 % h=drawgshhg('Region','nc','resolution','l','Color','b')
 %
-
-GSHHGDIR='/Users/bblanton/matlab/data.mtlab/GSHHG';
+GSHHGDIR=getenv('GSHHGDIR');
+if isempty(GSHHGDIR)
+    GSHHGDIR=string(getenv('HOME')) +  "/matlab/data.matlab/GSHHG";
+end
 if ~exist(GSHHGDIR,'dir')
     msg=sprintf('Could not find GSHHG dir: %s.' ,GSHHGDIR);
     msg=[msg 'Download the binary GSHHG files from http://www.soest.hawaii.edu/pwessel/gshhg/gshhg-gmt-2.3.7.tar.gz '];
-    msg=[msg 'and set the above GSHHGDIR to its location.'];
+    msg=[msg 'and setenv the above GSHHGDIR to its location.'];
     error (msg) 
 end
 
